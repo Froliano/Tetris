@@ -18,19 +18,19 @@ class Block(pygame.sprite.Sprite):
 
     def collide(self, block):
         #verifier si le coin en bas à droite du block est dans le block self
-        if self.x >= block.x and self.x <= block.x + block.size and self.y >= block.y and self.y <= block.y + block.size:
+        if self.x > block.x and self.x < block.x + block.size and self.y > block.y and self.y < block.y + block.size:
             return True
 
         # verifier si le coin en haut à droite du block est dans le block self
-        if self.x >= block.x and self.x <= block.x + block.size and self.y + self.size >= block.y and self.y + self.size <= block.y + block.size:
+        if self.x > block.x and self.x < block.x + block.size and self.y + self.size > block.y and self.y + self.size < block.y + block.size:
             return True
 
         # verifier si le coin en bas à gauche du block est dans le block self
-        if self.x + self.size >= block.x and self.x + self.size <= block.x + block.size and self.y >= block.y and self.y <= block.y + block.size:
+        if self.x + self.size > block.x and self.x + self.size < block.x + block.size and self.y > block.y and self.y < block.y + block.size:
             return True
 
         # verifier si le coin en haut à gauche du block est dans le block self
-        if self.x + self.size >= block.x and self.x + self.size <= block.x + block.size and self.y + self.size >= block.y and self.y + self.size <= block.y + block.size:
+        if self.x + self.size > block.x and self.x + self.size < block.x + block.size and self.y + self.size > block.y and self.y + self.size < block.y + block.size:
             return True
 
         return False

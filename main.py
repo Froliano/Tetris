@@ -1,5 +1,6 @@
 import pygame
 from block import Block
+from figure import Figure
 
 
 pygame.init()
@@ -9,24 +10,19 @@ def main():
     screen = pygame.display.set_mode((800, 720))
     pygame.display.set_caption("Tetris")
     clock = pygame.time.Clock()
-
     run = True
 
     block = Block(100, 60, (255, 255, 255))
-    block2 = Block(10, 10, (255, 0, 0))
 
+    form = [["_", "X", "_"],
+            ["X", "X", "X"],
+            ["_", "_", "_"]]
 
-    group = pygame.sprite.Group()
-    group.add(block)
-    group.add(block2)
+    figure = Figure(0, 0,(255, 255, 255), form)
 
     while run:
         screen.fill((0, 0, 0))
-        block.draw(screen)
-        block2.draw(screen)
-        if not block.collide(block2):
-            print("ok")
-
+        figure.draw(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -35,13 +31,13 @@ def main():
         if pressed[pygame.K_ESCAPE]:
             run = False
         if pressed[pygame.K_LEFT]:
-            block2.left()
+            block.left()
         if pressed[pygame.K_RIGHT]:
-            block2.right()
+            block.right()
         if pressed[pygame.K_UP]:
-            block2.top()
+            block.top()
         if pressed[pygame.K_DOWN]:
-            block2.down()
+            block.down()
 
 
         pygame.display.flip()

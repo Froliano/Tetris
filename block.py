@@ -41,7 +41,7 @@ class Block(pygame.sprite.Sprite):
     def right(self):
         self.x += 1
 
-    def top(self):
+    def up(self):
         self.y -= 1
 
     def down(self):

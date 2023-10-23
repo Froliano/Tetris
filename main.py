@@ -19,10 +19,13 @@ def main():
             ["_", "_", "_"]]
 
     figure = Figure(0, 0,(255, 255, 255), form)
+    figure2 = Figure(100, 100,(0, 0, 255), form)
 
     while run:
         screen.fill((0, 0, 0))
         figure.draw(screen)
+        figure2.draw(screen)
+        print(figure.collide(figure2))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -31,13 +34,13 @@ def main():
         if pressed[pygame.K_ESCAPE]:
             run = False
         if pressed[pygame.K_LEFT]:
-            block.left()
+            figure.left()
         if pressed[pygame.K_RIGHT]:
-            block.right()
+            figure.right()
         if pressed[pygame.K_UP]:
-            block.top()
+            figure.up()
         if pressed[pygame.K_DOWN]:
-            block.down()
+            figure.down()
 
 
         pygame.display.flip()

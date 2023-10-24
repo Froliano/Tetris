@@ -1,7 +1,7 @@
 import pygame
 from block import Block
 from figure import Figure
-from init import WINDOW_SIZE
+from init import WINDOW_SIZE, PLACE_SPACE_POS, PLACE_SPACE_SIZE, rightLPos
 
 
 pygame.init()
@@ -12,19 +12,21 @@ def main():
     pygame.display.set_caption("Tetris")
     clock = pygame.time.Clock()
     run = True
+    placeSpace = pygame.Rect(PLACE_SPACE_POS, PLACE_SPACE_SIZE)
+
     a = 0
 
     form = [["_", "X", "_"],
             ["X", "X", "X"],
             ["_", "_", "_"]]
 
-    figure = Figure(0, 0,(255, 255, 255), form)
-    figure2 = Figure(128, 128,(0, 0, 255), form)
+    figure = Figure(0, 0,(255, 255, 255), rightLPos)
+    figure2 = Figure(64, 128,(0, 0, 255), rightLPos)
 
     while run:
         screen.fill((0, 0, 0))
+        pygame.draw.rect(screen, (30, 30, 30), placeSpace)
         figure.update(screen)
-        figure2.update(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

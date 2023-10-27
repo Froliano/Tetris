@@ -12,6 +12,7 @@ class Figure:
 
         self.images = images
         self.currentIndexImage = 0
+        self.stun = False
 
         self.rotate()
 
@@ -24,11 +25,13 @@ class Figure:
         for block in self.group:
             block.draw(screen)
 
-    def collide(self, figure):
+    def collide(self, figures):
         for block in self.group:
-            for blockTarget in figure.group:
-                if block.collide(blockTarget):
-                    return True
+            for figure in figures:
+                if not self == figure:
+                    for blockTarget in figure.group:
+                        if block.collide(blockTarget):
+                            return True
         return False
 
     def sideBorder(self):
@@ -78,6 +81,16 @@ class Figure:
         if self.y + self.size[1] < PLACE_SPACE_POS[1] + PLACE_SPACE_SIZE[1]:
             self.y += BLOCK_SIZE
 
-    def gravity(self):
+    def gravity(self, figures):
+        x, y = self.x, self.y
         if self.y + self.size[1] < PLACE_SPACE_POS[1] + PLACE_SPACE_SIZE[1]:
-            self.down()
+
+            self.y += BLOCK_SIZE
+            for i, block in enumerate(self.group):
+                block.update(self.x + self.blocksPlaces[i][0], self.y + self.blocksPlaces[i][1])
+
+            if self.collide(figures):
+                self.x, self.y = x, y
+                self.stun = True
+        else:
+            self.stun = True

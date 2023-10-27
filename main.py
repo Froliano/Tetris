@@ -1,7 +1,7 @@
 import pygame
 from block import Block
 from figure import Figure
-from init import WINDOW_SIZE, PLACE_SPACE_POS, PLACE_SPACE_SIZE, rightLPos
+from init import WINDOW_SIZE, PLACE_SPACE_POS, PLACE_SPACE_SIZE, ALL_FIGURES
 
 
 pygame.init()
@@ -20,8 +20,8 @@ def main():
             ["X", "X", "X"],
             ["_", "_", "_"]]
 
-    figure = Figure(0, 0,(255, 255, 255), rightLPos)
-    figure2 = Figure(64, 128,(0, 0, 255), rightLPos)
+    figure = Figure(0, 0,(255, 255, 255), ALL_FIGURES[1])
+    figure2 = Figure(0, 0,(0, 0, 255), ALL_FIGURES[0])
 
     while run:
         screen.fill((0, 0, 0))
@@ -43,6 +43,8 @@ def main():
                     figure.up()
                 if pressed == pygame.K_DOWN:
                     figure.down()
+                if pressed == pygame.K_KP0:
+                    figure.rotate()
         a += 1
         if a >= 100:
             figure.gravity()

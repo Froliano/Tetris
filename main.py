@@ -16,23 +16,16 @@ def main():
     run = True
     placeSpace = pygame.Rect(PLACE_SPACE_POS, PLACE_SPACE_SIZE)
 
-    all_figures = []
+    allBlocks = []
 
     a = 0
 
-    form = [["_", "X", "_"],
-            ["X", "X", "X"],
-            ["_", "_", "_"]]
-
     currentFigure = Figure(0, 0,(255, 255, 255), choice(ALL_FIGURES))
     nextFigure = Figure(0, 0,(0, 0, 255), choice(ALL_FIGURES))
-    all_figures.append(currentFigure)
 
     while run:
         screen.fill((0, 0, 0))
         pygame.draw.rect(screen, (30, 30, 30), placeSpace)
-        for figure in all_figures:
-            figure.update(screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -42,44 +35,58 @@ def main():
                 if pressed == pygame.K_ESCAPE:
                     run = False
                 if pressed == pygame.K_LEFT:
-                    currentFigure.left()
+                    currentFigure.left(allBlocks)
                 if pressed == pygame.K_RIGHT:
-                    currentFigure.right()
+                    currentFigure.right(allBlocks)
                 if pressed == pygame.K_UP:
                     currentFigure.up()
                 if pressed == pygame.K_DOWN:
-                    currentFigure.down()
+                    currentFigure.down(allBlocks)
                 if pressed == pygame.K_KP0:
-                    currentFigure.rotate()
-        a += 1
-        if a == 50:
-            currentFigure.gravity(all_figures)
-            a = 0
+                    currentFigure.rotate(allBlocks)
+
+        currentFigure.update(screen)
+        for block in allBlocks:
+            block.draw(screen)
+
 
         if currentFigure.stun:
+            destroy = False
 
-            for i in range(int(PLACE_SPACE_SIZE[1] / BLOCK_SIZE)):
+            for block in currentFigure.group:
+                allBlocks.append(block)
+
+
+            for i in range(int(PLACE_SPACE_SIZE[1] / BLOCK_SIZE), 0, -1):
                 blockLine = 0
                 blocks = []
-                for figure in all_figures:
+                """for figure in all_figures:
                     if len(figure.group) == 0:
-                        all_figures.remove(figure)
+                        all_figures.remove(figure)"""
 
-                    for block in figure.group:
-                        if block.y - PLACE_SPACE_POS[1] == BLOCK_SIZE * i:
-                            blockLine += 1
-                            blocks.append(block)
+                for block in allBlocks:
+                    if block.y - PLACE_SPACE_POS[1] == BLOCK_SIZE * i:
+                        blockLine += 1
+                        blocks.append(block)
                 if blockLine == NUMBER_BLOCK_LINE:
-                    for figure in all_figures:
-                        for block in blocks:
-                            if block in figure.group:
-                                figure.group.remove(block)
-                                figure.blocksPlaces.remove((block.x - figure.x, block.y - figure.y))
+                    destroy = True
+                    for block in blocks:
+                        allBlocks.remove(block)
+
+            if destroy:
+                for i in range(int(PLACE_SPACE_SIZE[1] / BLOCK_SIZE), 0, -1):
+                    for block in allBlocks:
+                        if block.y - PLACE_SPACE_POS[1] == BLOCK_SIZE * i:
+                            block.fall(allBlocks)
 
 
             currentFigure = nextFigure
-            all_figures.append(currentFigure)
-            nextFigure = Figure(0, 0,(0, 0, 255), choice(ALL_FIGURES))
+            nextFigure = Figure(0, 0, (0, 0, 255), choice(ALL_FIGURES))
+
+        if a == 12:
+            currentFigure.gravity(allBlocks)
+            a = 0
+        a += 1
 
         pygame.display.flip()
         clock.tick(60)

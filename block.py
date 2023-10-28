@@ -1,5 +1,5 @@
 import pygame.draw
-from init import BLOCK_SIZE
+from init import BLOCK_SIZE, PLACE_SPACE_POS, PLACE_SPACE_SIZE
 
 
 class Block(pygame.sprite.Sprite):
@@ -35,3 +35,12 @@ class Block(pygame.sprite.Sprite):
 
     def down(self):
         self.y += self.size
+
+    def fall(self, blocks):
+        x, y = self.x, self.y
+        if self.y + self.size < PLACE_SPACE_POS[1] + PLACE_SPACE_SIZE[1]:
+            self.y += self.size
+            for block in blocks:
+                if self.collide(block) and not self == block:
+                    self.x, self.y = x, y
+
